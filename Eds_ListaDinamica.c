@@ -18,6 +18,7 @@ typedef struct SE{
 } tipoelemento;
 typedef tipoelemento *tipolista;
 
+void _carica(tipolista *lista);
 void _inizializza(tipolista *lista);
 bool _isEnd(tipolista lista);
 void _inserisci_coda(tipolista *lista, tipopersona dati);
@@ -97,6 +98,7 @@ int main(){
 				printf("1. Inserisci in testa\n");
 				printf("2. Inserisci in coda\n");
 				printf("3. Inserisci in posizione\n");
+				printf("4. Carica la lista per debug\n");
 				printf("\n0. Torna al menu principale\n");
 				printf("\nSelezione: ");
 				scanf("%d",&sel);
@@ -106,6 +108,9 @@ int main(){
 						break;
 					case 1: case 2: case 3:
 						_leggi_dati(&lista,sel);
+						break;
+					case 4:
+						_carica(&lista);
 						break;
 					default:
 						printf("Selezione non valida\n");
@@ -367,5 +372,42 @@ void _cerca(tipolista lista){
 		}
 		punt=punt->next;
 		i++;
+	}
+}
+
+void _carica(tipolista *lista){
+	int i,n;
+	tipopersona dati;
+	printf("Numero elementi da caricare: ");
+	scanf("%d",&n);
+	for(i=0;i<n;i++){
+		switch(rand()%5){
+			case 0:
+				strcpy(dati.nome,"Gianmario");
+				dati.genere='m';
+				dati.h=rand()%50+140;
+				break;
+			case 1:
+				strcpy(dati.nome,"Lucia");
+				dati.genere='f';
+				dati.h=rand()%50+140;
+				break;
+			case 2:
+				strcpy(dati.nome,"Giovanni");
+				dati.genere='m';
+				dati.h=rand()%50+140;
+				break;
+			case 3:
+				strcpy(dati.nome,"Antonella");
+				dati.genere='f';
+				dati.h=rand()%50+140;
+			default:
+				strcpy(dati.nome,"Anna");
+				dati.genere='f';
+				dati.h=rand()%60+130;
+				break;
+		}
+		printf("%s %c %d \n",dati.nome,dati.genere,dati.h);
+		_inserisci_coda(lista,dati);
 	}
 }
