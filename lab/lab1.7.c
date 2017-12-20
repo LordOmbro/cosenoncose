@@ -1,4 +1,4 @@
-#include <stdio.h> <stdlib.h>
+#include <stdio.h>
 #define pi 3.14
 #define true 1
 float _cerchio(){
@@ -42,5 +42,5 @@ int main(){
 				printf("Selezione non valida\n");
 				break;
 		}
-	} while(1);
+	} while(true);
 }
