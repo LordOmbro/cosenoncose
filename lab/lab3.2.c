@@ -82,8 +82,7 @@ void _inizializza(tipolista *lista){
 bool _isEnd(tipolista lista){
 	if(lista==NULL)
 		return true;
-	else
-		return false;
+	return false;
 }
 
 void _leggi_dati(tipolista *lista, int sel){
@@ -159,7 +158,7 @@ void _carica(tipolista *lista){
 				dati.data.giorno=12;
 				dati.data.mese=12;
 				dati.data.anno=1976;
-				dati.importo=(float)rand()/7;
+				dati.importo=(float)rand()/70;
 				break;
 			case 1:
 				strcpy(dati.nome,"Annamaria");
@@ -167,7 +166,7 @@ void _carica(tipolista *lista){
 				dati.data.giorno=4;
 				dati.data.mese=9;
 				dati.data.anno=1996;
-				dati.importo=(float)rand()/7;
+				dati.importo=(float)rand()/70;
 				break;
 			case 2:
 				strcpy(dati.nome,"Carlo");
@@ -175,7 +174,7 @@ void _carica(tipolista *lista){
 				dati.data.giorno=29;
 				dati.data.mese=2;
 				dati.data.anno=1987;
-				dati.importo=(float)rand()/7;
+				dati.importo=(float)rand()/70;
 				break;
 			case 3:
 				strcpy(dati.nome,"Lucia");
@@ -183,7 +182,7 @@ void _carica(tipolista *lista){
 				dati.data.giorno=19;
 				dati.data.mese=11;
 				dati.data.anno=1980;
-				dati.importo=(float)rand()/7;
+				dati.importo=(float)rand()/70;
 				break;
 			default:
 				strcpy(dati.nome,"Antonella");
@@ -191,7 +190,7 @@ void _carica(tipolista *lista){
 				dati.data.giorno=10;
 				dati.data.mese=11;
 				dati.data.anno=1966;
-				dati.importo=(float)rand()/7;
+				dati.importo=(float)rand()/70;
 				break;
 		}
 		_inserisci_coda(lista,dati);

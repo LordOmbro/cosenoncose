@@ -11,7 +11,8 @@ typedef struct DATO {
 } tipodato;
 
 typedef struct EL {
-    tipodato dato;
-    struct EL *next;
+	tipodato dato;
+	struct EL *next;
 } tipoelemento;
+
 typedef tipoelemento *tipolista;
