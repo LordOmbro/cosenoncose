@@ -127,8 +127,7 @@ void _inserisci_coda(tipolista *lista, tipodato dati){
 float _stampa_tot(tipolista lista){
 	if(_isEnd(lista))
 		return 0;
-	else
-		return lista->persona.importo+_stampa_tot(lista->next);
+	return lista->persona.importo+_stampa_tot(lista->next);
 }
 
 int _media(tipolista lista, str cerca_cognome, str cerca_nome){
@@ -136,11 +135,10 @@ int _media(tipolista lista, str cerca_cognome, str cerca_nome){
 		return 0;
 	if(strcmp(lista->persona.cognome,cerca_cognome)==0&&strcmp(lista->persona.nome,cerca_nome)==0)
 		return lista->persona.importo+_media(lista->next,cerca_cognome,cerca_nome);
-	else
-		return _media(lista->next,cerca_cognome,cerca_nome);
-	}
+	return _media(lista->next,cerca_cognome,cerca_nome);
+}
 
-	int _cont(tipolista lista, str cerca_cognome, str cerca_nome){
+int _cont(tipolista lista, str cerca_cognome, str cerca_nome){
 	if(_isEnd(lista))
 		return 0;
 	if(strcmp(lista->persona.cognome,cerca_cognome)==0&&strcmp(lista->persona.nome,cerca_nome)==0)
