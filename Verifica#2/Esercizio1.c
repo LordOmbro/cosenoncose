@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #define MAX_LEN 30
 #define MAX_ARTICOLI 10
@@ -50,15 +49,17 @@ int main(){
 	int sel,id=0;
 	tipodata data_oggi;
 	_inizializza(&lista);
+	system("clear");
 	printf("\nInserisci la data di lavoro [gg mm aaaa]: "); //SICCOME IL PROGRAMMA VIENE RIAVVIATO OGNI GIORNO, IMMAGINO CHE PER TUTTA LA DURATA DEL PROGRAMMA RIMANGA INVARIATA
 	scanf("%d%d%d",&data_oggi.giorno,&data_oggi.mese,&data_oggi.anno);
+	system("clear");
 	while(true){
 		printf("\nMENU\n");
 		printf("1. Inserisci prenotazione\n");
 		printf("2. Elimina prenotazione\n");
 		printf("3. Stampa prenotazioni in attesa\n");
 		printf("4. Calcola importo medio per prenotazione\n");
-		printf("\n0. Inserisci prenotazione\n");
+		printf("\n0. Esci dal programma\n");
 		printf("\nSelezione: ");
 		scanf("%d",&sel);
 		switch(sel){
@@ -72,6 +73,10 @@ int main(){
 				break;
 			case 2:
 				// SOTTOMENU: elimina testa o in mezzo -- NON NECESSARIO
+				if(_isEnd(lista)){
+					printf("Nessuna prenotazione!\n");
+					break;
+				}
 				system("clear");
 				printf("\nSOTTOMENU: ELIMINAZIONE\n");
 				printf("1. Elimina prenotazione più vecchia\n");
@@ -118,7 +123,7 @@ bool _isEnd(tipolista lista){
 
 void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
 	tipodato dati;
-	time_t t;
+	time_t t=time(NULL);
 	struct tm *ora_corrente=localtime(&t);
 	dati.id=id;
 	dati.data.giorno=data_oggi.giorno;
@@ -126,13 +131,13 @@ void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
 	dati.data.anno=data_oggi.anno;
 	dati.ora.h=ora_corrente->tm_hour;
 	dati.ora.m=ora_corrente->tm_min;
-	printf("\nNumero articoli: ");
+	printf("Numero articoli: ");
 	scanf("%d",&dati.articoli);
 	while(dati.articoli<1||dati.articoli>10){
 		printf("Numero di articoli non valido [MAX %d]: ",MAX_ARTICOLI);
 		scanf("%d",&dati.articoli);
 	}
-	printf("\nTotale: ");
+	printf("Totale: €");
 	scanf("%f",&dati.importo);
 	while(dati.importo<=0){
 		printf("Importo non valido, riprova: ");
@@ -167,7 +172,7 @@ void _elimina_testa(tipolista *lista){
 }
 
 void _elimina_posizione(tipolista *lista){
-	tipoelemento *puntCorrente,*puntPrecedente;
+	tipolista puntCorrente,puntPrecedente;
 	int id_el;
 	puntPrecedente=NULL;
 	puntCorrente=*lista;
@@ -184,7 +189,7 @@ void _elimina_posizione(tipolista *lista){
 		puntCorrente=puntCorrente->next;
 	}
 	if(_isEnd(puntCorrente)){
-		printf("Posizione non valida");
+		printf("L'ID %d non esiste!\n",id_el);
 		return;
 	}
 	puntPrecedente->next=puntCorrente->next;
@@ -195,12 +200,13 @@ void _elimina_posizione(tipolista *lista){
 
 void _stampa_tutto(tipolista lista){
 	int i=0;
+	printf("\n");
 	while(_isEnd(lista)==false){
 		i++;
 		_stampa(lista);
 		lista=lista->next;
 	}
-	printf("\nPrenotazioni in attesa: %d\n",i);
+	printf("Prenotazioni in attesa: %d\n",i);
 }
 
 void _stampa(tipolista lista){
