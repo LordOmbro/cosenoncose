@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #define MAX_LEN 30
 #define MAX_ARTICOLI 10
 
@@ -27,7 +28,7 @@ typedef struct DATO {
 } tipodato;
 
 typedef struct EL {
-	tipodato dato;
+	tipodato dati;
 	struct EL *next;
 } tipoelemento;
 
@@ -39,6 +40,7 @@ void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi);
 void _inserisci(tipolista *lista, tipodato dati);
 void _elimina_testa(tipolista *lista);
 void _elimina_posizione(tipolista *lista);
+void _stampa_tutto(tipolista lista);
 void _stampa(tipolista lista);
 void _media(tipolista lista);
 
@@ -77,8 +79,10 @@ int main(){
 				scanf("%d",&sel);
 				switch(sel){
 					case 1:
+						_elimina_testa(&lista);
 						break;
 					case 2:
+						_elimina_posizione(&lista);
 						break;
 					default:
 						break;
@@ -122,6 +126,81 @@ void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
 	}
 	printf("\nTotale: ");
 	scanf("%f",&dati.importo);
+	while(dati.importo<=0){
+		printf("Importo non valido, riprova: ");
+		scanf("%d",&dati.articoli);
+	}
+	_inserisci(lista,dati);
+}
 
+void _inserisci(tipolista *lista, tipodato dati){
+	tipolista punt;
+	if(_isEnd(*lista)){
+		punt=malloc(sizeof(tipoelemento));
+		punt->dati=dati;
+		punt->next=NULL;
+		*lista=punt;
+		return;
+	}
+	_inserisci(&(*lista)->next,dati);
+}
 
+void _elimina_testa(tipolista *lista){
+	tipolista punt;
+	punt=*lista;
+	if(_isEnd(*lista)){
+		printf("Nessuna prenotazione!");
+		return;
+	}
+	printf("PRENOTAZIONE RIMOSSA: ");
+	_stampa(*lista);
+	*lista=(*lista)->next;
+	free(punt);
+}
+
+void _elimina_posizione(tipolista *lista){	//NON E' RICHIESTA, COME IL SOTTOMENU'
+	tipoelemento *puntCorrente,*puntPrecedente;
+	int id_el;
+	puntPrecedente=NULL;
+	puntCorrente=*lista;
+	printf("ID prenotazione da eliminare: ");
+	scanf("%d",&id_el);
+	if(puntCorrente->dati.id==id_el){
+		_elimina_testa(lista);
+		return;
+	}
+	while(_isEnd(puntCorrente)==false){
+		if(puntCorrente->dati.id==id_el)
+			break;
+		puntPrecedente=puntCorrente;
+		puntCorrente=puntCorrente->next;
+	}
+	if(_isEnd(puntCorrente)){
+		printf("Posizione non valida");
+		return;
+	}
+	puntPrecedente->next=puntCorrente->next;
+	printf("PRENOTAZIONE RIMOSSA: ");
+	_stampa(puntCorrente);
+	free(puntCorrente);
+}
+
+void _stampa_tutto(tipolista lista){
+	while(_isEnd(lista)==false){
+		_stampa(lista);
+		lista=lista->next;
+	}
+
+}
+
+void _stampa(tipolista lista){
+	printf("N.%d %d/%d/%d %d.%d: %d elementi, €%.2f\n",	lista->dati.id,
+														lista->dati.data.giorno,
+														lista->dati.data.mese,
+														lista->dati.data.anno,
+														lista->dati.ora.h,
+														lista->dati.ora.m,
+														lista->dati.articoli,
+														lista->dati.importo
+	);
 }
