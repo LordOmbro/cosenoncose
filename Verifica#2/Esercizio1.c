@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX_LEN 30
+#define MAX_ARTICOLI 10
 
 typedef char str[MAX_LEN];
 typedef enum {false,true} bool;
@@ -34,7 +35,7 @@ typedef tipoelemento *tipolista;
 
 void _inizializza(tipolista *lista);
 bool _isEnd(tipolista lista);
-void _inserisci_dati(tipolista *lista)
+void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi);
 void _inserisci(tipolista *lista, tipodato dati);
 void _elimina_testa(tipolista *lista);
 void _elimina_posizione(tipolista *lista);
@@ -43,8 +44,11 @@ void _media(tipolista lista);
 
 int main(){
 	tipolista lista;
-	int sel,id;
+	int sel,id=0;
+	tipodata data_oggi;
 	_inizializza(&lista);
+	printf("\nInserisci la data di lavoro [gg mm aaaa]: "); //SICCOME IL PROGRAMMA VIENE RIAVVIATO OGNI GIORNO, IMMAGINO CHE PER TUTTA LA DURATA DEL PROGRAMMA RIMANGA INVARIATA
+	scanf("%d%d%d",&data_oggi.giorno,&data_oggi.mese,&data_oggi.anno);
 	while(true){
 		printf("\nMENU\n");
 		printf("1. Inserisci prenotazione\n");
@@ -59,7 +63,8 @@ int main(){
 				printf("\nNegozio chiuso!\n");
 				break;
 			case 1:
-				_inserisci_dati(&lista);
+				id++;
+				_inserisci_dati(&lista,id,data_oggi);
 				break;
 			case 2:
 				// SOTTOMENU: elimina testa o in mezzo -- NON NECESSARIO
@@ -101,4 +106,22 @@ bool _isEnd(tipolista lista){
 	if(lista==NULL)
 		return true;
 	return false;
+}
+
+void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
+	tipodato dati;
+	dati.id=id;
+	dati.data.giorno=data_oggi.giorno;
+	dati.data.mese=data_oggi.mese;
+	dati.data.anno=data_oggi.anno;
+	printf("\nNumero articoli: ");
+	scanf("%d",&dati.articoli);
+	while(dati.articoli<1||dati.articoli>10){
+		printf("Numero di articoli non valido [MAX %d]: ",MAX_ARTICOLI);
+		scanf("%d",&dati.articoli);
+	}
+	printf("\nTotale: ");
+	scanf("%f",&dati.importo);
+
+
 }
