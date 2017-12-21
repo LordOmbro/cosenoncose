@@ -42,7 +42,8 @@ void _elimina_testa(tipolista *lista);
 void _elimina_posizione(tipolista *lista);
 void _stampa_tutto(tipolista lista);
 void _stampa(tipolista lista);
-void _media(tipolista lista);
+float _media(tipolista lista);
+int _cont(tipolista lista);
 
 int main(){
 	tipolista lista;
@@ -55,7 +56,7 @@ int main(){
 		printf("\nMENU\n");
 		printf("1. Inserisci prenotazione\n");
 		printf("2. Elimina prenotazione\n");
-		printf("3. Stampa prenotazione in attesa\n");
+		printf("3. Stampa prenotazioni in attesa\n");
 		printf("4. Calcola importo medio per prenotazione\n");
 		printf("\n0. Inserisci prenotazione\n");
 		printf("\nSelezione: ");
@@ -63,6 +64,7 @@ int main(){
 		switch(sel){
 			case 0:
 				printf("\nNegozio chiuso!\n");
+				return 0;
 				break;
 			case 1:
 				id++;
@@ -75,7 +77,7 @@ int main(){
 				printf("1. Elimina prenotazione più vecchia\n");
 				printf("2. Elimina prenotazione per ID\n");
 				printf("\n0. Torna al menu principale\n");
-				printf("\nSelezione: \n");
+				printf("\nSelezione: ");
 				scanf("%d",&sel);
 				switch(sel){
 					case 1:
@@ -89,15 +91,17 @@ int main(){
 				}
 				break;
 			case 3:
+				_stampa_tutto(lista);
 				break;
 			case 4:
+				printf("\nL'importo medio delle prenotazioni in attesa è €%.2f\n",_media(lista)/(float)_cont(lista));
 				break;
 			default:
-				printf("Selezione non valida\n");
+				printf("\nSelezione non valida\n");
 				break;
 		}
 		printf("\nPremi ENTER per tornare al menu\n");
-		system("read");
+		system("read p");
 		system("clear");
 	}
 }
@@ -114,10 +118,14 @@ bool _isEnd(tipolista lista){
 
 void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
 	tipodato dati;
+	time_t t;
+	struct tm *ora_corrente=localtime(&t);
 	dati.id=id;
 	dati.data.giorno=data_oggi.giorno;
 	dati.data.mese=data_oggi.mese;
 	dati.data.anno=data_oggi.anno;
+	dati.ora.h=ora_corrente->tm_hour;
+	dati.ora.m=ora_corrente->tm_min;
 	printf("\nNumero articoli: ");
 	scanf("%d",&dati.articoli);
 	while(dati.articoli<1||dati.articoli>10){
@@ -158,7 +166,7 @@ void _elimina_testa(tipolista *lista){
 	free(punt);
 }
 
-void _elimina_posizione(tipolista *lista){	//NON E' RICHIESTA, COME IL SOTTOMENU'
+void _elimina_posizione(tipolista *lista){
 	tipoelemento *puntCorrente,*puntPrecedente;
 	int id_el;
 	puntPrecedente=NULL;
@@ -186,11 +194,13 @@ void _elimina_posizione(tipolista *lista){	//NON E' RICHIESTA, COME IL SOTTOMENU
 }
 
 void _stampa_tutto(tipolista lista){
+	int i=0;
 	while(_isEnd(lista)==false){
+		i++;
 		_stampa(lista);
 		lista=lista->next;
 	}
-
+	printf("\nPrenotazioni in attesa: %d\n",i);
 }
 
 void _stampa(tipolista lista){
@@ -203,4 +213,16 @@ void _stampa(tipolista lista){
 														lista->dati.articoli,
 														lista->dati.importo
 	);
+}
+
+float _media(tipolista lista){
+	if(_isEnd(lista))
+		return 0;
+	return lista->dati.importo+_media(lista->next);
+}
+
+int _cont(tipolista lista){
+	if(_isEnd(lista))
+		return 0;
+	return 1+_cont(lista->next);
 }
