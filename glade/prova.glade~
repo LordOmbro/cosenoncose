@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkPopover" id="click0">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkImage" id="img">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="stock">gtk-about</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window0">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkButton" id="button0">
+        <property name="label" translatable="yes">button</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <signal name="clicked" handler="_clicked" swapped="no"/>
+      </object>
+    </child>
+  </object>
+</interface>

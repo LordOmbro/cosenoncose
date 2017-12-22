@@ -11,17 +11,13 @@ typedef struct DATA {
 	int giorno;
 	int mese;
 	int anno;
-} tipodata;
-
-typedef struct ORA {
 	int h;
 	int m;
-} tipoora;
+} tipodata;
 
 typedef struct DATO {
 	int id;
 	tipodata data;
-	tipoora ora;
 	int articoli;
 	float importo;
 } tipodato;
@@ -35,7 +31,7 @@ typedef tipoelemento *tipolista;
 
 void _inizializza(tipolista *lista);
 bool _isEnd(tipolista lista);
-void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi);
+void _inserisci_dati(tipolista *lista, int id);
 void _inserisci(tipolista *lista, tipodato dati);
 void _elimina_testa(tipolista *lista);
 void _elimina_posizione(tipolista *lista);
@@ -47,11 +43,9 @@ int _cont(tipolista lista);
 int main(){
 	tipolista lista;
 	int sel,id=0;
-	tipodata data_oggi;
 	_inizializza(&lista);
 	system("clear");
-	printf("\nInserisci la data di lavoro [gg mm aaaa]: "); //SICCOME IL PROGRAMMA VIENE RIAVVIATO OGNI GIORNO, IMMAGINO CHE PER TUTTA LA DURATA DEL PROGRAMMA RIMANGA INVARIATA
-	scanf("%d%d%d",&data_oggi.giorno,&data_oggi.mese,&data_oggi.anno);
+
 	system("clear");
 	while(true){
 		printf("\nMENU\n");
@@ -64,12 +58,12 @@ int main(){
 		scanf("%d",&sel);
 		switch(sel){
 			case 0:
-				printf("\nNegozio chiuso!\n");
+				printf("Negozio chiuso!\n");
 				return 0;
 				break;
 			case 1:
 				id++;
-				_inserisci_dati(&lista,id,data_oggi);
+				_inserisci_dati(&lista,id);
 				break;
 			case 2:
 				// SOTTOMENU: elimina testa o in mezzo -- NON NECESSARIO
@@ -99,14 +93,17 @@ int main(){
 				_stampa_tutto(lista);
 				break;
 			case 4:
-				printf("\nL'importo medio delle prenotazioni in attesa è €%.2f\n",_media(lista)/(float)_cont(lista));
+				if(_cont(lista)!=0)
+					printf("\nL'importo medio delle prenotazioni in attesa è €%.2f\n",_media(lista)/(float)_cont(lista));
+				else
+					printf("\nNessuna prenotazione in attesa\n");
 				break;
 			default:
 				printf("\nSelezione non valida\n");
 				break;
 		}
-		printf("\nPremi ENTER per tornare al menu\n");
-		system("read p");
+		printf("Premere ENTER per tornare al menu\n");
+		system("read");
 		system("clear");
 	}
 }
@@ -121,16 +118,16 @@ bool _isEnd(tipolista lista){
 	return false;
 }
 
-void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
+void _inserisci_dati(tipolista *lista, int id){
 	tipodato dati;
 	time_t t=time(NULL);
-	struct tm *ora_corrente=localtime(&t);
+	struct tm *data_ora=localtime(&t);
 	dati.id=id;
-	dati.data.giorno=data_oggi.giorno;
-	dati.data.mese=data_oggi.mese;
-	dati.data.anno=data_oggi.anno;
-	dati.ora.h=ora_corrente->tm_hour;
-	dati.ora.m=ora_corrente->tm_min;
+	dati.data.giorno=data_ora->tm_mday;
+	dati.data.mese=data_ora->tm_mon+1;
+	dati.data.anno=data_ora->tm_year+1900;
+	dati.data.h=data_ora->tm_hour;
+	dati.data.m=data_ora->tm_min;
 	printf("Numero articoli: ");
 	scanf("%d",&dati.articoli);
 	while(dati.articoli<1||dati.articoli>10){
@@ -141,7 +138,7 @@ void _inserisci_dati(tipolista *lista, int id, tipodata data_oggi){
 	scanf("%f",&dati.importo);
 	while(dati.importo<=0){
 		printf("Importo non valido, riprova: ");
-		scanf("%d",&dati.articoli);
+		scanf("%f",&dati.importo);
 	}
 	_inserisci(lista,dati);
 }
@@ -214,8 +211,8 @@ void _stampa(tipolista lista){
 														lista->dati.data.giorno,
 														lista->dati.data.mese,
 														lista->dati.data.anno,
-														lista->dati.ora.h,
-														lista->dati.ora.m,
+														lista->dati.data.h,
+														lista->dati.data.m,
 														lista->dati.articoli,
 														lista->dati.importo
 	);
