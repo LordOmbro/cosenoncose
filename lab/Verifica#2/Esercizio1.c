@@ -68,7 +68,7 @@ int main(){
 			case 2:
 				// SOTTOMENU: elimina testa o in mezzo -- NON NECESSARIO
 				if(_isEnd(lista)){
-					printf("Nessuna prenotazione!\n");
+					printf("\nNessuna prenotazione in attesa\n");
 					break;
 				}
 				system("clear");
@@ -103,7 +103,7 @@ int main(){
 				break;
 		}
 		printf("Premere ENTER per tornare al menu\n");
-		system("read");
+		system("read p");
 		system("clear");
 	}
 }
