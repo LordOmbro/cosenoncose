@@ -31,7 +31,7 @@ int _lista(lista numeri){
 	return (numeri->num%3!=0 && numeri->num%5!=0)+_lista(numeri->prox);
 }
 
-//UN MAIN PER VERIFICARE CHE IL PROGRAMMA FUNZIONI!!!
+//UN MAIN PER VERIFICARE CHE IL PROGRAMMA FUNZIONI!!
 void _carica(lista *numeri, int array[MAX]){
 	int i;
 	for(i=0;i<MAX;i++){
