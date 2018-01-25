@@ -10,6 +10,23 @@ typedef struct EL {
 } tipoelemento;
 typedef tipoelemento *tipolista;
 
+int contatore(tipolista lista){
+	if(lista==NULL)
+		return 0;
+	return 1+contatore(lista->next);
+}
+
+void elimina_testa(tipolista *lista){
+	tipolista punt;
+	if(lista==NULL)
+		return;
+	punt=*lista;
+	*lista=(*lista)->next;
+	free(punt);
+}
+
+//SI OK DOPO QUESTO COMMENTO NON INTERESSA A NESSUNO
+//FINE ROBA UTILE
 bool _primo(int n){
 	int i;
 	for(i=2;i<n;i++)
@@ -37,7 +54,7 @@ void _check_primo(tipolista *lista, tipolista check){
 	if(_primo(check->num))
 		(*lista)->next_primo=check;
 	else
-		_check_pari(lista,check->next);
+		_check_primo(lista,check->next);
 }
 
 void _inserisci(tipolista *lista, int n){
@@ -50,12 +67,24 @@ void _inserisci(tipolista *lista, int n){
 	_check_primo(&(*lista),(*lista)->next);
 }
 
-void _check(tipolista *lista, int n){
+void _inserisci_coda(tipolista *lista, int n){
+	tipolista punt;
 	if(*lista==NULL){
-		_inserisci(&(*lista),n);
+		punt=malloc(sizeof(tipoelemento));
+		punt->num=n;
+		punt->next=NULL;
+		*lista=punt;
 		return;
 	}
-	if((*lista)->num > n)
+	_inserisci_coda(&(*lista)->next,n);
+}
+
+void _check(tipolista *lista, int n){
+	if(*lista==NULL){
+		_inserisci_coda(&(*lista),n);
+		return;
+	}
+	if((*lista)->num < n)
 		_check(&(*lista)->next,n);
 	else
 		_inserisci(&(*lista),n);
