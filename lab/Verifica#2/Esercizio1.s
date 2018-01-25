@@ -22,8 +22,9 @@
 	.string	"%d"
 .LC9:
 	.string	"Negozio chiuso!"
+	.align 8
 .LC10:
-	.string	"Nessuna prenotazione!"
+	.string	"\nNessuna prenotazione in attesa"
 .LC11:
 	.string	"\nSOTTOMENU: ELIMINAZIONE"
 	.align 8
@@ -37,16 +38,13 @@
 	.align 8
 .LC15:
 	.string	"\nL'importo medio delle prenotazioni in attesa \303\250 \342\202\254%.2f\n"
-	.align 8
 .LC16:
-	.string	"\nNessuna prenotazione in attesa"
-.LC17:
 	.string	"\nSelezione non valida"
 	.align 8
-.LC18:
+.LC17:
 	.string	"Premere ENTER per tornare al menu"
-.LC19:
-	.string	"read"
+.LC18:
+	.string	"read p"
 	.text
 	.globl	main
 	.type	main, @function
@@ -197,17 +195,17 @@ main:
 	call	printf@PLT
 	jmp	.L10
 .L16:
-	leaq	.LC16(%rip), %rdi
+	leaq	.LC10(%rip), %rdi
 	call	puts@PLT
 	jmp	.L10
 .L2:
-	leaq	.LC17(%rip), %rdi
+	leaq	.LC16(%rip), %rdi
 	call	puts@PLT
 	nop
 .L10:
-	leaq	.LC18(%rip), %rdi
+	leaq	.LC17(%rip), %rdi
 	call	puts@PLT
-	leaq	.LC19(%rip), %rdi
+	leaq	.LC18(%rip), %rdi
 	call	system@PLT
 	leaq	.LC0(%rip), %rdi
 	call	system@PLT
@@ -264,16 +262,16 @@ _isEnd:
 .LFE4:
 	.size	_isEnd, .-_isEnd
 	.section	.rodata
-.LC20:
+.LC19:
 	.string	"Numero articoli: "
 	.align 8
-.LC21:
+.LC20:
 	.string	"Numero di articoli non valido [MAX %d]: "
-.LC22:
+.LC21:
 	.string	"Totale: \342\202\254"
-.LC23:
+.LC22:
 	.string	"%f"
-.LC24:
+.LC23:
 	.string	"Importo non valido, riprova: "
 	.text
 	.globl	_inserisci_dati
@@ -315,7 +313,7 @@ _inserisci_dati:
 	movq	-8(%rbp), %rax
 	movl	4(%rax), %eax
 	movl	%eax, -28(%rbp)
-	leaq	.LC20(%rip), %rdi
+	leaq	.LC19(%rip), %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	leaq	-48(%rbp), %rax
@@ -327,7 +325,7 @@ _inserisci_dati:
 	jmp	.L25
 .L26:
 	movl	$10, %esi
-	leaq	.LC21(%rip), %rdi
+	leaq	.LC20(%rip), %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	leaq	-48(%rbp), %rax
@@ -343,24 +341,24 @@ _inserisci_dati:
 	movl	-24(%rbp), %eax
 	cmpl	$10, %eax
 	jg	.L26
-	leaq	.LC22(%rip), %rdi
+	leaq	.LC21(%rip), %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	leaq	-48(%rbp), %rax
 	addq	$28, %rax
 	movq	%rax, %rsi
-	leaq	.LC23(%rip), %rdi
+	leaq	.LC22(%rip), %rdi
 	movl	$0, %eax
 	call	__isoc99_scanf@PLT
 	jmp	.L27
 .L28:
-	leaq	.LC24(%rip), %rdi
+	leaq	.LC23(%rip), %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	leaq	-48(%rbp), %rax
 	addq	$28, %rax
 	movq	%rax, %rsi
-	leaq	.LC23(%rip), %rdi
+	leaq	.LC22(%rip), %rdi
 	movl	$0, %eax
 	call	__isoc99_scanf@PLT
 .L27:
@@ -438,6 +436,8 @@ _inserisci:
 .LFE6:
 	.size	_inserisci, .-_inserisci
 	.section	.rodata
+.LC25:
+	.string	"Nessuna prenotazione!"
 .LC26:
 	.string	"PRENOTAZIONE RIMOSSA: "
 	.text
@@ -462,7 +462,7 @@ _elimina_testa:
 	call	_isEnd
 	testl	%eax, %eax
 	je	.L33
-	leaq	.LC10(%rip), %rdi
+	leaq	.LC25(%rip), %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	jmp	.L32
