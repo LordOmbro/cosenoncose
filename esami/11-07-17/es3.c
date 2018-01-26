@@ -16,6 +16,15 @@ int specchio(int array[], int n){
 	return (array[0]%array[n-1]==0) && specchio(array+1,n-2);
 }
 
+//CONSEGNA 3
+int sommalista(lista l){
+	if(l==NULL)
+		return 0;
+	if(l->num % 2 == 0)
+		return l->num + sommalista(l->prox->prox);
+}
+
+//chiamata: sommalista(lista)
 
 int main(){
 	int array[MAX]={10,10,10,10,10,5,5,5,2,2};
