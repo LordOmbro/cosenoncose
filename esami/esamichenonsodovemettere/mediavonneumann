@@ -1,0 +1,20 @@
+READ
+STORE 0     //contatore n
+LOAD= 0
+STORE 1     //contatore per media
+STORE 2     //memoria numeri
+READ
+ADD 2
+STORE 2
+LOAD 1
+ADD= 1
+STORE 1
+LOAD 0
+SUB= 1
+STORE 0
+BG 5
+LOAD 2
+DIV 1
+WRITE
+END
+© 2018 GitHub, Inc.
